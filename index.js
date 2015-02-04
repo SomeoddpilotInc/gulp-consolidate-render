@@ -8,6 +8,10 @@ function basicCompileData(globals, file) {
 }
 
 function templates(options) {
+  options = _.merge({
+    templateDir: "templates"
+  }, options);
+
   var globals = options.globals || {};
 
   var compileData = options.compileData || basicCompileData;
@@ -19,7 +23,11 @@ function templates(options) {
   return through.obj(function (file, enc, callback) {
     var templateName = file.frontMatter.template || "post";
 
-    var templatePath = path.join(__dirname, templateName + ".html");
+    var templatePath = path.join(
+      "./",
+      options.templateDir,
+      templateName + ".html"
+    );
 
     var data = compileData(globals, file);
 
