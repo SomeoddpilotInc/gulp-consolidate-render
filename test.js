@@ -25,7 +25,7 @@ function test(options, assertions) {
 }
 
 describe("gulp-consolidate-render", function () {
-  it("should collect items", function (done) {
+  it("should render using engine", function (done) {
     function testAssertions(file) {
       assert(file.contents instanceof Buffer);
 
