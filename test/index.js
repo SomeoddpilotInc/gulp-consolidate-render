@@ -39,4 +39,16 @@ describe("gulp-consolidate-render", function () {
       engine: "handlebars"
     }, testAssertions);
   });
+
+  it("should throw error if missing engine", function () {
+    assert.throws(test, Error, "Missing required `engine` parameter");
+  });
+
+  it("should throw error if missing engine", function () {
+    assert.throws(function () {
+      test({
+        engine: "handlebars"
+      });
+    }, Error, "Template does not exist at templates/test.html");
+  });
 });

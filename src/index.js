@@ -2,6 +2,7 @@ var consolidate = require("consolidate");
 var _ = require("lodash");
 var path = require("path");
 var through = require("through2");
+var fs = require("fs");
 
 function basicCompileData(globals, file) {
   return _.extend(globals, file);
@@ -33,16 +34,22 @@ function templates(options) {
       templateName + ".html"
     );
 
-    var data = compileData(globals, file);
-
-    consolidate[options.engine](templatePath, data, function (err, html) {
-      if (err) {
-        throw err;
+    fs.exists(templatePath, function (exists) {
+      if (!exists) {
+        throw new Error("Template does not exist at " + templatePath);
       }
 
-      file.contents = new Buffer(html, "utf-8");
+      var data = compileData(globals, file);
 
-      callback(null, file);
+      consolidate[options.engine](templatePath, data, function (err, html) {
+        if (err) {
+          throw err;
+        }
+
+        file.contents = new Buffer(html, "utf-8");
+
+        callback(null, file);
+      });
     });
   });
 }
