@@ -1,4 +1,7 @@
 # gulp-consolidate-render
+
+[![Build Status](https://travis-ci.org/alexsomeoddpilot/gulp-consolidate-render.svg?branch=master)](https://travis-ci.org/alexsomeoddpilot/gulp-consolidate-render)
+
 A library for compiling and rendering via Consolidate.js
 
 ## consolidate([options])
