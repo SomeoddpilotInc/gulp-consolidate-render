@@ -23,7 +23,7 @@
   "homepage": "https://github.com/alexsomeoddpilot/gulp-consolidate-render",
   "dependencies": {
     "consolidate": "^0.10.0",
-    "lodash": "^2.4.1",
+    "lodash": "^3.1.0",
     "through2": "^0.6.3"
   },
   "config": {
