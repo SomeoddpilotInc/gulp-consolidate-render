@@ -4,6 +4,15 @@
 
 A library for compiling and rendering via Consolidate.js
 
+```javascript
+gulp.src("src/*.md")
+  ...
+  .pipe(consolidate({
+    engine: "handlebars"
+  }))
+  ...
+```
+
 ## consolidate([options])
 
 ### options
