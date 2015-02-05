@@ -43,4 +43,18 @@ describe("gulp-consolidate-render", function () {
   it("should throw error if missing engine", function () {
     assert.throws(test, Error, "Missing required `engine` parameter");
   });
+
+  it("should throw error if missing frontMatter", function () {
+    assert.throws(function () {
+      var collector = consolidate({
+        engine: "handlebars"
+      });
+
+      var file = getFakeFile();
+
+      delete file.frontMatter;
+
+      collector.write(file);
+    }, Error, "Missing frontMatter");
+  });
 });
