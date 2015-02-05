@@ -1,7 +1,7 @@
 var assert = require("assert");
 var es = require("event-stream");
 var File = require("vinyl");
-var consolidate = require("./");
+var consolidate = require("./..");
 
 function getFakeFile() {
   var file = new File({
@@ -35,7 +35,7 @@ describe("gulp-consolidate-render", function () {
     }
 
     test({
-      templateDir: "tests/fixtures",
+      templateDir: "test/fixtures",
       engine: "handlebars"
     }, testAssertions);
   });

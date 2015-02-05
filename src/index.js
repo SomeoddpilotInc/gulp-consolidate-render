@@ -22,7 +22,7 @@ function templates(options) {
 
   return through.obj(function (file, enc, callback) {
     if (!file.frontMatter) {
-      throw "Missing frontMatter";
+      throw new Error("Missing frontMatter");
     }
 
     var templateName = file.frontMatter.template || "post";
