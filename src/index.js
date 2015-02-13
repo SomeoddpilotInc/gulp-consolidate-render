@@ -43,8 +43,13 @@ function templates(options) {
       var data = compileData([
         globals,
         file.frontMatter || {},
+        {
+          contents: file.contents.toString()
+        },
         file
       ]);
+
+      console.log(data.contents);
 
       consolidate[options.engine](templatePath, data, function (err, html) {
         if (err) {
