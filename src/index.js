@@ -4,8 +4,8 @@ var path = require("path");
 var through = require("through2");
 var fs = require("fs");
 
-function basicCompileData(globals, file) {
-  return _.extend(globals, file);
+function basicCompileData(sources) {
+  return _.merge.apply(_, sources);
 }
 
 function templates(options) {
@@ -40,7 +40,11 @@ function templates(options) {
         throw new Error("Template does not exist at " + templatePath);
       }
 
-      var data = compileData(globals, file);
+      var data = compileData([
+        globals,
+        file.frontMatter || {},
+        file
+      ]);
 
       consolidate[options.engine](templatePath, data, function (err, html) {
         if (err) {
