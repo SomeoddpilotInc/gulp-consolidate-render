@@ -49,8 +49,6 @@ function templates(options) {
         file
       ]);
 
-      console.log(data.contents);
-
       consolidate[options.engine](templatePath, data, function (err, html) {
         if (err) {
           throw err;
