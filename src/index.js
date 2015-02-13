@@ -10,7 +10,8 @@ function basicCompileData(globals, file) {
 
 function templates(options) {
   options = _.merge({
-    templateDir: "templates"
+    templateDir: "templates",
+    defaultTemplate: "post"
   }, options);
 
   var globals = options.globals || {};
@@ -26,7 +27,7 @@ function templates(options) {
       throw new Error("Missing frontMatter");
     }
 
-    var templateName = file.frontMatter.template || "post";
+    var templateName = file.frontMatter.template || options.defaultTemplate;
 
     var templatePath = path.join(
       "./",
