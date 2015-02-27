@@ -11,7 +11,8 @@ function basicCompileData(sources) {
 function templates(options) {
   options = _.merge({
     templateDir: "templates",
-    defaultTemplate: "post"
+    defaultTemplate: "post",
+    extension: '.html'
   }, options);
 
   var globals = options.globals || {};
@@ -32,7 +33,7 @@ function templates(options) {
     var templatePath = path.join(
       "./",
       options.templateDir,
-      templateName + ".html"
+      templateName + options.extension
     );
 
     fs.exists(templatePath, function (exists) {
