@@ -13,17 +13,17 @@ function basicCompileData(sources) {
 function templates(options) {
   "use strict";
 
-  options = _.merge({
+  var compiledOptions = _.merge({
     templateDir: "templates",
     defaultTemplate: "post",
     extension: '.html'
   }, options);
 
-  var globals = options.globals || {};
+  var globals = compiledOptions.globals || {};
 
-  var compileData = options.compileData || basicCompileData;
+  var compileData = compiledOptions.compileData || basicCompileData;
 
-  if (!options.engine) {
+  if (!compiledOptions.engine) {
     throw new Error("Missing required `engine` parameter");
   }
 
@@ -32,12 +32,12 @@ function templates(options) {
       throw new Error("Missing frontMatter");
     }
 
-    var templateName = file.frontMatter.template || options.defaultTemplate;
+    var templateName = file.frontMatter.template || compiledOptions.defaultTemplate;
 
     var templatePath = path.join(
       "./",
-      options.templateDir,
-      templateName + options.extension
+      compiledOptions.templateDir,
+      templateName + compiledOptions.extension
     );
 
     fs.exists(templatePath, function onExists(exists) {
@@ -55,7 +55,7 @@ function templates(options) {
         file
       ]);
 
-      consolidate[options.engine](templatePath, data, function onRender(err, html) {
+      consolidate[compiledOptions.engine](templatePath, data, function onRender(err, html) {
         if (err) {
           throw err;
         }
