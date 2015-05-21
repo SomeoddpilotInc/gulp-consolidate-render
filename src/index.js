@@ -1,9 +1,9 @@
-var consolidate = require("consolidate");
+var consolidate = require("consolidate-p");
 var _ = require("lodash");
 var path = require("path");
 var through = require("through2");
 var fs = require("fs");
-var Promise = require('q').Promise;
+var Promise = require("q").Promise;
 
 function basicCompileData(sources) {
   return _.merge.apply(_, sources);
@@ -16,18 +16,6 @@ function templateFileExists(templatePath) {
         return reject(new Error("Template does not exist at " + templatePath));
       }
       resolve(true);
-    });
-  });
-}
-
-function consolidateP(engine, templatePath, data) {
-  return new Promise(function (resolve, reject) {
-    consolidate[engine](templatePath, data, function (err, html) {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(html);
     });
   });
 }
@@ -72,7 +60,7 @@ function templates(options) {
           file
         ]);
 
-        return consolidateP(compiledOptions.engine, templatePath, data);
+        return consolidate[compiledOptions.engine](templatePath, data);
       })
       .then(function (html) {
         file.contents = new Buffer(html, "utf-8");
