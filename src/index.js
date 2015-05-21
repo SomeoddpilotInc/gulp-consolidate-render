@@ -5,14 +5,10 @@ var through = require("through2");
 var fs = require("fs");
 
 function basicCompileData(sources) {
-  "use strict";
-
   return _.merge.apply(_, sources);
 }
 
 function templates(options) {
-  "use strict";
-
   var compiledOptions = _.merge({
     templateDir: "templates",
     defaultTemplate: "post",
