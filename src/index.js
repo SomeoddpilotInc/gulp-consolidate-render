@@ -3,6 +3,7 @@ var _ = require("lodash");
 var path = require("path");
 var through = require("through2");
 var fs = require("fs");
+var Promise = require('q').Promise;
 
 function basicCompileData(sources) {
   return _.merge.apply(_, sources);
