@@ -27,7 +27,7 @@ function templates(options) {
     throw new Error("Missing required `engine` parameter");
   }
 
-  return through.obj(function (file, enc, callback) {
+  return through.obj(function onData(file, enc, callback) {
     if (!file.frontMatter) {
       throw new Error("Missing frontMatter");
     }
@@ -40,7 +40,7 @@ function templates(options) {
       templateName + options.extension
     );
 
-    fs.exists(templatePath, function (exists) {
+    fs.exists(templatePath, function onExists(exists) {
       if (!exists) {
         throw new Error("Template does not exist at " + templatePath);
       }
@@ -55,7 +55,7 @@ function templates(options) {
         file
       ]);
 
-      consolidate[options.engine](templatePath, data, function (err, html) {
+      consolidate[options.engine](templatePath, data, function onRender(err, html) {
         if (err) {
           throw err;
         }
