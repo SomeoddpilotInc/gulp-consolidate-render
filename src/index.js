@@ -69,7 +69,8 @@ function templates(options) {
       })
       .catch(function (err) {
         throw err;
-      });
+      })
+      .done();
   });
 }
 
