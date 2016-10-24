@@ -66,6 +66,8 @@ function templates(options) {
         file.contents = new Buffer(html, "utf-8");
 
         callback(null, file);
+      }, function (err) {
+        throw err;
       })
       .catch(function (err) {
         throw err;
