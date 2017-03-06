@@ -67,10 +67,10 @@ function templates(options) {
 
         callback(null, file);
       }, function (err) {
-        throw err;
+        throw new Error(err);
       })
       .catch(function (err) {
-        throw err;
+        throw new Error(err);
       })
       .done();
   });
