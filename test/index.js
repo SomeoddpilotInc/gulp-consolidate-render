@@ -3,7 +3,9 @@ var es = require("event-stream");
 var File = require("vinyl");
 var consolidate = require("./..");
 
-function getFakeFile(options = {}) {
+function getFakeFile(options) {
+  var options = options || {};
+
   var file = new File({
     contents: new Buffer('template: test\ncontent: "This is YAML"\n')
   });
