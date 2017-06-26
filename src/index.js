@@ -38,6 +38,11 @@ function templates(options) {
 
   return through.obj(function onData(file, enc, callback) {
     var fileData = file.frontMatter;
+
+    if(file.frontMatter && _.isEmpty(file.frontMatter)) {
+      throw new Error('Missing frontMatter at ' + file.path);
+    }
+
     if (!file.frontMatter) {
       fileData = yaml.load(file.contents.toString());
     }
