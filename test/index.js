@@ -3,9 +3,9 @@ var es = require("event-stream");
 var File = require("vinyl");
 var consolidate = require("./..");
 
-function getFakeFile() {
+function getFakeFile(options = {}) {
   var file = new File({
-    contents: es.readArray(["stream", "with", "those", "contents"])
+    contents: new Buffer('template: test\ncontent: "This is YAML"\n')
   });
 
   file.frontMatter = {
@@ -13,13 +13,22 @@ function getFakeFile() {
     template: "test"
   };
 
+  if (options.yamlOnly) {
+    delete file.frontMatter;
+  }
+
   return file;
 }
 
-function test(options, assertions) {
+function test(options, assertions, fileOverride) {
   var collector = consolidate(options);
 
-  collector.write(getFakeFile());
+  var file = getFakeFile();
+  if (fileOverride) {
+    file = fileOverride;
+  }
+
+  collector.write(file);
 
   collector.once("data", assertions);
 }
@@ -44,7 +53,41 @@ describe("gulp-consolidate-render", function () {
     assert.throws(test, Error, "Missing required `engine` parameter");
   });
 
-  it("should throw error if missing frontMatter", function () {
+  it("should throw error if frontMatter exists, but is empty", function () {
+    assert.throws(function () {
+      var collector = consolidate({
+        engine: "handlebars"
+      });
+
+      var file = getFakeFile();
+
+      file.frontMatter = {};
+
+      collector.write(file);
+    }, Error, 'Missing frontMatter at ');
+  });
+
+  it("should fallback to YAML contents if frontMatter is missing", function (done) {
+    function testAssertions(file) {
+      assert(file.contents instanceof Buffer);
+
+      assert.equal(file.contents.toString(), "<h1>Test</h1>\n\n<p>This is YAML</p>\n");
+
+      done();
+    }
+
+    test({
+      templateDir: "test/fixtures",
+      engine: "handlebars"
+    },
+    testAssertions,
+    getFakeFile({
+      yamlOnly: true
+    })
+    );
+  });
+
+  it("should throw error if missing frontMatter and YAML", function () {
     assert.throws(function () {
       var collector = consolidate({
         engine: "handlebars"
@@ -53,8 +96,9 @@ describe("gulp-consolidate-render", function () {
       var file = getFakeFile();
 
       delete file.frontMatter;
+      file.contents = '';
 
       collector.write(file);
-    }, Error, "Missing frontMatter");
+    }, Error, 'Data file is empty at ');
   });
 });
