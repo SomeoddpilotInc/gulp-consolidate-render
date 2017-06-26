@@ -3,6 +3,7 @@ var _ = require('lodash');
 var path = require('path');
 var through = require('through2');
 var fs = require('fs');
+var yaml = require('yaml-js');
 var Promise = require('q').Promise;
 
 function basicCompileData(sources) {
@@ -36,11 +37,16 @@ function templates(options) {
   }
 
   return through.obj(function onData(file, enc, callback) {
+    var fileData = file.frontMatter;
     if (!file.frontMatter) {
-      throw new Error('Missing frontMatter');
+      fileData = yaml.load(file.contents.toString());
     }
 
-    var templateName = file.frontMatter.template || compiledOptions.defaultTemplate;
+    if (_.isEmpty(fileData)) {
+      throw new Error('Data file is empty at ' + file.path);
+    }
+
+    var templateName = fileData.template || compiledOptions.defaultTemplate;
 
     var templatePath = path.join(
       './',
@@ -53,13 +59,12 @@ function templates(options) {
         var data = compileData([
           {},
           globals,
-          file.frontMatter || {},
+          fileData,
           {
             contents: file.contents.toString()
           },
           file
         ]);
-
         return consolidate[compiledOptions.engine](templatePath, data);
       })
       .then(function (html) {
