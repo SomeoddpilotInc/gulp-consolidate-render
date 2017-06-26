@@ -1,4 +1,4 @@
-var consolidate = require("consolidate-p");
+var consolidate = require('consolidate');
 var _ = require('lodash');
 var path = require('path');
 var through = require('through2');
